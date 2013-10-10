@@ -9,6 +9,7 @@ import android.os.Bundle;
 public class HomeActivity extends SearchableActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
+	  //Comment to test git
     super.onCreate(savedInstanceState);
     contentContainer.addView(new ActionCard<AugmentedRealityActivity>(
         this, AugmentedRealityActivity.class, "Tours", R.drawable.graphic1));
