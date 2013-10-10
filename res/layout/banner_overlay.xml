@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="25dp"
+    android:id="@+id/banner_overlay">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn"
+        android:text="@string/search"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/selectable_btn"
+        android:padding="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/input_hint"
+        android:id="@+id/input"
+        android:layout_toLeftOf="@id/btn"
+        android:layout_alignTop="@id/btn"
+        android:layout_alignBottom="@id/btn"
+        android:background="@drawable/search_selectable_content"
+        android:maxLines="1"
+        android:padding="5dp"
+        android:imeOptions="actionDone"
+        android:inputType="textImeMultiLine"/>
+</RelativeLayout>
