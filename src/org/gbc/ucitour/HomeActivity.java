@@ -12,7 +12,7 @@ public class HomeActivity extends SearchableActivity {
 	  //Comment to test git
     super.onCreate(savedInstanceState);
     contentContainer.addView(new ActionCard<AugmentedRealityActivity>(
-        this, AugmentedRealityActivity.class, "Tours", R.drawable.graphic1));
+        this, AugmentedRealityActivity.class, "Take a Tour", R.drawable.takeatour));
     contentContainer.addView(new ActionCard<AugmentedRealityActivity>(
         this, AugmentedRealityActivity.class, "World View", R.drawable.graphic2));
     contentContainer.addView(new ActionCard<AugmentedRealityActivity>(
