@@ -16,7 +16,7 @@ class Card extends LinearLayout {
   private void init(Context context) {
     LinearLayout.LayoutParams params = ViewHelper.linearLayout(ViewHelper.MATCH_PARENT,
         ViewHelper.WRAP_CONTENT);
-    params.setMargins(dpInt(15, context), dpInt(18, context), dpInt(15, context), dpInt(18, context));
+    params.setMargins(dpInt(15, context), dpInt(18, context), dpInt(15, context), dpInt(0, context));
     setLayoutParams(params);
     setBackgroundResource(R.drawable.content);
     setOrientation(LinearLayout.HORIZONTAL);
