@@ -6,6 +6,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+/**
+ * Location manager that can be accessed for location data
+ */
 public class LocationProvider implements LocationListener {
   private static LocationProvider instance;
   
@@ -24,6 +27,10 @@ public class LocationProvider implements LocationListener {
     manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
   }
 
+  /**
+   * Gets the location
+   * @return The location, or null if non have been found yet
+   */
   public Location getLocation() {
     return point;
   }
