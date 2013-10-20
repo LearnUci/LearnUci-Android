@@ -6,5 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="search">Search</string>
     <string name="input_hint">Tap to search</string>
+    <string name="tour_general">General</string>
+    <string name="tour_academic">Academic</string>
     
 </resources>

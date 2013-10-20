@@ -7,6 +7,7 @@
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="18" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -16,18 +17,20 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.NoTitleBar">
+        android:theme="@android:style/Theme.NoTitleBar" >
         <activity
             android:name="org.gbc.ucitour.HomeActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,16 +39,20 @@
         </activity>
         <activity
             android:name="org.gbc.ucitour.search.SearchActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
-            />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
         <activity
             android:name="org.gbc.ucitour.ar.AugmentedRealityActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="org.gbc.ucitour.tour.TourActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
