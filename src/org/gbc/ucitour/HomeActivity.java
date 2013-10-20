@@ -7,11 +7,15 @@ import org.gbc.ucitour.view.ActionCard;
 
 import android.os.Bundle;
 
+/**
+ * Main activity that is displayed when app starts
+ */
 public class HomeActivity extends SearchableActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
 	  //Comment to test git
     super.onCreate(savedInstanceState);
+    // Add action cards for various activities
     contentContainer.addView(new ActionCard<TourActivity>(
         this, TourActivity.class, "Take a Tour", R.drawable.takeatour));
     contentContainer.addView(new ActionCard<AugmentedRealityActivity>(

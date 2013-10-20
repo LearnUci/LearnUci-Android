@@ -16,6 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+/**
+ * A card that starts another activity when clicked
+ * @param <T> A class that extends an Activity
+ */
 @SuppressLint("ViewConstructor")
 public class ActionCard<T extends Activity> extends Card implements OnClickListener {
 	private Class<T> clazz;

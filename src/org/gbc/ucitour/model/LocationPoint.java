@@ -4,6 +4,9 @@ import android.util.Base64;
 
 import com.google.gson.JsonObject;
 
+/**
+ * Datastructure to represent a location point.
+ */
 public class LocationPoint {
   private float lat;
   private float lng;
@@ -12,6 +15,9 @@ public class LocationPoint {
   private String type;
   private byte[] img;
   
+  /**
+   * @param obj Json object that contains the data to wrap into a LocationPoint
+   */
   public LocationPoint(JsonObject obj) {
     name = obj.get("name").getAsString();
     abbr = obj.get("abbr").getAsString();
