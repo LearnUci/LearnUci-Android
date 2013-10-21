@@ -19,10 +19,10 @@ public class TourActivity extends SearchableActivity {
 		LinearLayout ll = (LinearLayout) li.inflate(R.layout.tour_view_select, contentContainer);
 
 		ScrollView svLeft = (ScrollView) ll.findViewById(R.id.tour_main_scroll_left);
-		svLeft.addView(new ActionCard<AugmentedRealityActivity>(this, AugmentedRealityActivity.class, "Take a Tour", R.drawable.takeatour));
+		svLeft.addView(new ActionCard<TourMapFragmentsActivity>(this, TourMapFragmentsActivity.class, "Take a Tour", R.drawable.takeatour));
 
 		ScrollView svRight = (ScrollView) ll.findViewById(R.id.tour_main_scroll_right);
-		svRight.addView(new ActionCard<AugmentedRealityActivity>(this, AugmentedRealityActivity.class, "Take a Tour", R.drawable.takeatour));
+		svRight.addView(new ActionCard<TourMapFragmentsActivity>(this, TourMapFragmentsActivity.class, "Take a Tour", R.drawable.takeatour));
 
 	}
 }

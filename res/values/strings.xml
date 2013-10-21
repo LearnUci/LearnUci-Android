@@ -8,5 +8,7 @@
     <string name="input_hint">Tap to search</string>
     <string name="tour_general">General</string>
     <string name="tour_academic">Academic</string>
+    <string name="tour_fragment_maps">Map Mode</string>
+    <string name="tour_fragment_ar">AR Mode</string>
     
 </resources>
