@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-class ViewHelper {
+public class ViewHelper {
   public static int MATCH_PARENT = RelativeLayout.LayoutParams.MATCH_PARENT;
   public static int WRAP_CONTENT = RelativeLayout.LayoutParams.WRAP_CONTENT;
   

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.gbc.ucitour.model.LocationPoint;
+import org.gbc.ucitour.model.TourPointInfo;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -29,6 +30,19 @@ public class Query {
       locations.add(new LocationPoint((JsonObject) elem));
     }
     return locations;
+  }	
+  
+  public static List<TourPointInfo> queryTours(){
+	    JsonParser parser = new JsonParser();
+	    JsonArray arr = (JsonArray) parser
+	        .parse(NetworkDispatcher.get(QUERY_URL, new HashMap<String, String>() {{
+	          put("action", "TOURS");
+	        }}));
+	    List<TourPointInfo> tours = new ArrayList<TourPointInfo>();
+	    for (JsonElement elem : arr) {
+	      tours.add(new TourPointInfo((JsonObject) elem));
+	    }
+	    return tours;
   }
   
   public static LocationPoint single(final String type, final String value) {
