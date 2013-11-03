@@ -5,18 +5,22 @@ import java.util.List;
 import org.gbc.ucitour.R;
 import org.gbc.ucitour.model.LocationPoint;
 import org.gbc.ucitour.net.Query;
+import org.gbc.ucitour.tour.TourMapFragmentsActivity;
 import org.gbc.ucitour.view.BannerView;
 import org.gbc.ucitour.view.LocationCard;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
 /**
  * Activity that contains a banner with a search bar.
  * Handles searching.
  */
-public class SearchableActivity extends Activity {
+public class SearchableActivity extends Activity implements OnClickListener {
   protected LinearLayout contentContainer;
   protected LinearLayout resultContainer;
   private BannerView banner;
@@ -46,7 +50,7 @@ public class SearchableActivity extends Activity {
       super.onBackPressed();
     }
   }
-  
+
   public void setShowSearch(boolean show) {
     // Display only one container depending on the mode
     contentContainer.setVisibility(show ? LinearLayout.GONE : LinearLayout.VISIBLE);
@@ -60,11 +64,21 @@ public class SearchableActivity extends Activity {
     
     // Populate the results with the points
     for (LocationPoint point : results) {
-      resultContainer.addView(new LocationCard(this, point));
+      LocationCard card = new LocationCard(this, point);
+      card.setOnClickListener(this);
+      resultContainer.addView(card);
     }
   }
   
   public void clearQuery() {
     resultContainer.removeAllViews();
+  }
+
+  @Override
+  public void onClick(View v) {
+    if (v instanceof LocationCard) {
+      LocationPoint point = ((LocationCard) v).getPoint();
+      startActivity(new Intent(this, TourMapFragmentsActivity.class));
+    }
   }                   
 }

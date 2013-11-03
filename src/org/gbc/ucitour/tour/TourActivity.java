@@ -1,7 +1,6 @@
 package org.gbc.ucitour.tour;
 
 import org.gbc.ucitour.R;
-import org.gbc.ucitour.ar.AugmentedRealityActivity;
 import org.gbc.ucitour.search.SearchableActivity;
 import org.gbc.ucitour.view.ActionCard;
 

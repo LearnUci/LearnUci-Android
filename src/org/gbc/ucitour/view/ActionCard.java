@@ -12,7 +12,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -50,7 +49,7 @@ public class ActionCard<T extends Activity> extends Card implements OnClickListe
 			pictureWithLabel.addView(iv);
 		}
 		
-		TextView tv = ViewHelper.text(context, text, 10);
+		TextView tv = ViewHelper.text(context, text, 16);
 		tv.setGravity(Gravity.CENTER_HORIZONTAL);
 
 		tv.setTypeface(null, Typeface.BOLD);

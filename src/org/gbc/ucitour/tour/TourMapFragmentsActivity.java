@@ -1,6 +1,7 @@
 package org.gbc.ucitour.tour;
 
 import org.gbc.ucitour.R;
+import org.gbc.ucitour.ar.AugmentedRealityFragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,28 +15,40 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.model.LatLng;
 
 public class TourMapFragmentsActivity extends FragmentActivity implements OnMapClickListener {
-
-    private static final String MAP_FRAGMENT_TAG = "GoogleMap";
-    private static final String COLOR_UNSELECTED = "#27ae60";
-    private static final int SELECTED_GRADIENT_RES = R.drawable.green_button_pressed;
+  private static final String MAP_FRAGMENT_TAG = "GoogleMap";
+  private static final String AR_FRAGMENT_TAG = "AR";
+  private static final String COLOR_UNSELECTED = "#27ae60";
+  private static final int SELECTED_GRADIENT_RES = R.drawable.green_button_pressed;
 	private TourMapFragment mMapFragment;
+	private AugmentedRealityFragment arFragment;
 	private Button mapModeButton;
 	private Button arModeButton;
 
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tour_fragments_main);
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.tour_fragments_main);
         
-		mMapFragment = (TourMapFragment) getSupportFragmentManager().findFragmentByTag(MAP_FRAGMENT_TAG);
-		if (mMapFragment == null) {
-			// To programmatically add the map, we first create a SupportMapFragment.
-			mMapFragment = new TourMapFragment();
-			// Then we add it using a FragmentTransaction.
-			FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-			fragmentTransaction.add(R.id.fragment_container, mMapFragment, MAP_FRAGMENT_TAG);
-			fragmentTransaction.commit();
+		
+		
+		arFragment = (AugmentedRealityFragment) getSupportFragmentManager().findFragmentByTag(AR_FRAGMENT_TAG);
+		if (arFragment == null) {
+		  arFragment = new AugmentedRealityFragment();
+		  FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		  fragmentTransaction.add(R.id.fragment_container, arFragment, AR_FRAGMENT_TAG);
+      fragmentTransaction.commit();
 		}
+		
+		mMapFragment = (TourMapFragment) getSupportFragmentManager().findFragmentByTag(MAP_FRAGMENT_TAG);
+    if (mMapFragment == null) {
+      // To programmatically add the map, we first create a SupportMapFragment.
+      mMapFragment = new TourMapFragment();
+      // Then we add it using a FragmentTransaction.
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      fragmentTransaction.add(R.id.fragment_container, mMapFragment, MAP_FRAGMENT_TAG);
+      fragmentTransaction.hide(mMapFragment);
+      fragmentTransaction.commit();
+    }
 		
 		mapModeButton = (Button) findViewById(R.id.tour_map_fragment_button);
 		mapModeButton.setClickable(false);
@@ -55,7 +68,6 @@ public class TourMapFragmentsActivity extends FragmentActivity implements OnMapC
 				
 				arModeButton.setClickable(true);
 				v.setClickable(false);
-				
 				replaceWithMap();
 			}
 
@@ -71,26 +83,25 @@ public class TourMapFragmentsActivity extends FragmentActivity implements OnMapC
 				
 				mapModeButton.setClickable(true);
 				v.setClickable(false);
-				
 				replaceWithAR();
 			}
-
 		});
-    }
+  }
 	
 	private void replaceWithAR() {
-		// TODO Auto-generated method stub
-		
+	  FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+    fragmentTransaction.hide(arFragment);
+    fragmentTransaction.show(mMapFragment);
+	  fragmentTransaction.commit();
 	}
 	
 	private void replaceWithMap() {
-		// TODO Auto-generated method stub
-		
+    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+    fragmentTransaction.hide(mMapFragment);
+    fragmentTransaction.show(arFragment);
+    fragmentTransaction.commit();
 	}
-
+	
 	@Override
-	public void onMapClick(LatLng arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onMapClick(LatLng arg0) { }
 }

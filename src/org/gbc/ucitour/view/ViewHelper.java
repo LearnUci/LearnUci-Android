@@ -21,15 +21,6 @@ class ViewHelper {
     return (int) dp(value, context);
   }
   
-  public static float sp(float value, Context context) {
-    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value,
-        context.getResources().getDisplayMetrics());
-  }
-  
-  public static int spInt(float value, Context context) {
-    return (int) sp(value, context);
-  }
-  
   public static RelativeLayout.LayoutParams layout(int w, int h) {
     return new RelativeLayout.LayoutParams(w, h);
   }
@@ -45,7 +36,7 @@ class ViewHelper {
   public static TextView text(Context context, String value, int spSize) {
     TextView textView = new TextView(context);
     textView.setText(value);
-    textView.setTextSize(spInt(spSize, context));
+    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, spSize);
     return textView;
   }
 }
