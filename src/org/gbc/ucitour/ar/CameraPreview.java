@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Size;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -44,11 +45,7 @@ class CameraPreview extends ViewGroup implements SurfaceHolder.Callback {
 
   public void setCamera(Camera camera) {
     mCamera = camera;
-    if (mCamera != null) {
-      mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
-      if (mSurfaceCreated)
-        requestLayout();
-    }
+    setCameraDisplayOrientation(CameraInfo.CAMERA_FACING_BACK, camera);
   }
 
   public void switchCamera(Camera camera) {
@@ -68,17 +65,6 @@ class CameraPreview extends ViewGroup implements SurfaceHolder.Callback {
     final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
     final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
     setMeasuredDimension(width, height);
-
-    if (mSupportedPreviewSizes != null) {
-      mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
-    }
-
-    if (mCamera != null) {
-      Camera.Parameters parameters = mCamera.getParameters();
-      parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-
-      mCamera.setParameters(parameters);
-    }
   }
 
   @Override
@@ -118,8 +104,9 @@ class CameraPreview extends ViewGroup implements SurfaceHolder.Callback {
     } catch (IOException exception) {
       Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
     }
-    if (mPreviewSize == null)
+    if (mPreviewSize == null) {
       requestLayout();
+    }
     mSurfaceCreated = true;
   }
 
@@ -131,50 +118,24 @@ class CameraPreview extends ViewGroup implements SurfaceHolder.Callback {
     }
   }
 
-  private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
-    final double ASPECT_TOLERANCE = 0.1;
-    double targetRatio = (double) w / h;
-    if (sizes == null)
-      return null;
-
-    Size optimalSize = null;
-    double minDiff = Double.MAX_VALUE;
-
-    int targetHeight = h;
-
-    // Try to find an size match aspect ratio and size
-    for (Size size : sizes) {
-      double ratio = (double) size.width / size.height;
-      if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE)
-        continue;
-      if (Math.abs(size.height - targetHeight) < minDiff) {
-        optimalSize = size;
-        minDiff = Math.abs(size.height - targetHeight);
-      }
+  private static void setCameraDisplayOrientation(int cameraId, android.hardware.Camera camera) {
+    android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+    android.hardware.Camera.getCameraInfo(cameraId, info);
+    int degrees = 0;
+    int result;
+    if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+      result = (info.orientation + degrees) % 360;
+      result = (360 - result) % 360; // compensate the mirror
+    } else { // back-facing
+      result = (info.orientation - degrees + 360) % 360;
     }
-
-    // Cannot find the one match the aspect ratio, ignore the requirement
-    if (optimalSize == null) {
-      minDiff = Double.MAX_VALUE;
-      for (Size size : sizes) {
-        if (Math.abs(size.height - targetHeight) < minDiff) {
-          optimalSize = size;
-          minDiff = Math.abs(size.height - targetHeight);
-        }
-      }
+    if (camera != null) {
+      camera.setDisplayOrientation(result);
     }
-    return optimalSize;
   }
 
   @Override
   public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-    // Now that the size is known, set up the camera parameters and begin
-    // the preview.
-    Camera.Parameters parameters = mCamera.getParameters();
-    parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-    requestLayout();
-
-    mCamera.setParameters(parameters);
     mCamera.startPreview();
   }
 

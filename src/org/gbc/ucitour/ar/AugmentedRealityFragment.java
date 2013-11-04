@@ -4,48 +4,37 @@ import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
-/**
- * Augmented Reality activity that displays a window ontop of a window feed
- */
 public class AugmentedRealityFragment extends Fragment {
+  private GLSurfaceView glView;
+  
   private CameraPreview mPreview;
   private Camera mCamera;
-  private GLSurfaceView glSurfaceView;
+  private FrameLayout fl;
   
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    
-    // Initiate the Open GL view and
-    // create an instance with this activity
-    glSurfaceView = new GLSurfaceView(getActivity());
-    glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-    glSurfaceView.setRenderer(new GlRenderer(getActivity()));
-
-    // Add the overlay feed
-    //getActivity().addContentView(glSurfaceView,
-    //    new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-    
-    // Create an instance of Camera
     mPreview = new CameraPreview(getActivity());
-    
-    // Add the camera feed
-    //getActivity().addContentView(mPreview, new LayoutParams(LayoutParams.MATCH_PARENT,
-    //    LayoutParams.MATCH_PARENT));
+    glView = new GLSurfaceView(getActivity());
+    glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+    glView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+    glView.setRenderer(new GlRenderer(getActivity()));
+    glView.setZOrderOnTop(true);
+    fl = new FrameLayout(getActivity());
+    fl.addView(mPreview);
+    fl.addView(glView);
   }
   
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    return glSurfaceView;
+    return fl;
   }
   
   @Override
@@ -66,5 +55,14 @@ public class AugmentedRealityFragment extends Fragment {
     super.onResume();
     mCamera = Camera.open();
     mPreview.setCamera(mCamera);
+  }
+  
+  @Override
+  public void onHiddenChanged(boolean hidden) {
+    if (hidden) {
+      glView.setVisibility(View.GONE);
+    } else {
+      glView.setVisibility(View.VISIBLE); 
+    }
   }
 }

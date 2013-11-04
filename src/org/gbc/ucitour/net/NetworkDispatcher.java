@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 
+import android.util.Log;
+
 /**
  * Dispatches network requests
  */
