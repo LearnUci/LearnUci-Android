@@ -14,6 +14,7 @@ public class LocationPoint {
   private String abbr;
   private String type;
   private byte[] img;
+  private long id;
   
   /**
    * @param obj Json object that contains the data to wrap into a LocationPoint
@@ -27,6 +28,11 @@ public class LocationPoint {
     if (obj.has("img")) {
       img = Base64.decode(obj.get("img").getAsString(), Base64.DEFAULT);
     }
+    float newLat = (0.120246f * lat) + (-0.0460953f * lng) + 24.1819f;
+    float newLng = (0.0693213f * lat) + (0.118713f * lng) - 106.18865f;
+    lat = newLat;
+    lng = newLng;
+    id = obj.get("id").getAsLong();
   }
   
   public String getName() {
@@ -55,5 +61,9 @@ public class LocationPoint {
   
   public byte[] getImage() {
     return img;
+  }
+  
+  public long getId() {
+    return id;
   }
 }

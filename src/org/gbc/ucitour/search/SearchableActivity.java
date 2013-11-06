@@ -78,7 +78,9 @@ public class SearchableActivity extends Activity implements OnClickListener {
   public void onClick(View v) {
     if (v instanceof LocationCard) {
       LocationPoint point = ((LocationCard) v).getPoint();
-      startActivity(new Intent(this, TourMapFragmentsActivity.class));
+      Intent intent = new Intent(this, TourMapFragmentsActivity.class);
+      intent.putExtra("locationId", point.getId());
+      startActivity(intent);
     }
   }                   
 }
