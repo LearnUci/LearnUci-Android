@@ -1,5 +1,7 @@
 package org.gbc.ucitour.location;
 
+import com.google.android.gms.maps.model.Marker;
+
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,18 +15,22 @@ public class LocationProvider implements LocationListener {
   private static LocationProvider instance;
   
   private Location point;
+
+  //the next location in our "tour"
+  private Marker nextLoc;
   
-  public static LocationProvider instance(Context context) {
+  public static LocationProvider instance(Context context, Marker nextLoc) {
     if (instance == null) {
-      instance = new LocationProvider(context);
+      instance = new LocationProvider(context, nextLoc);
     }
     return instance;
   }
   
-  private LocationProvider(Context context) {
+  private LocationProvider(Context context, Marker nextLoc) {
     LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-    manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
-    manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
+    manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, this);
+    manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, this);
+    this.nextLoc = nextLoc;
   }
 
   /**
@@ -34,11 +40,27 @@ public class LocationProvider implements LocationListener {
   public Location getLocation() {
     return point;
   }
+  
+  public void setNextLocation(Marker nextLoc){
+	  this.nextLoc = nextLoc;
+  }
 
   @Override
   public void onLocationChanged(Location location) {
     point = location;
     System.out.println(location.getLatitude() + " " + location.getLongitude());
+    
+    //if we have the next tour point, check if we're close enough
+    if(nextLoc != null){
+    	//if difference between two points as < X meters, bring up the imagewindow~
+    	Location nextLocLoc = new Location("");
+    	nextLocLoc.setLatitude(nextLoc.getPosition().latitude);
+    	nextLocLoc.setLongitude(nextLoc.getPosition().longitude);
+    	float meters = point.distanceTo(nextLocLoc);
+    	if(meters < 75){
+    		nextLoc.showInfoWindow();
+    	}
+    }
   }
 
   @Override

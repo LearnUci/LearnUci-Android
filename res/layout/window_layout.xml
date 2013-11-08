@@ -2,21 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="100dp"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:gravity="center_horizontal" 
-    android:padding="5dp">
-    
-	<TextView
-	    android:id="@+id/window_text"
-	    android:textSize="12sp"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginBottom="5dp"
-	    android:textColor="#000000"
-	    />
-	
-	<ImageView 
-	    android:id="@+id/window_image"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"/>
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/window_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:textColor="#000000"
+        android:textSize="13sp" 
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/window_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/window_text_moveon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="@string/tour_window_moveon"
+        android:textColor="#888888"
+        android:textStyle="italic"
+        android:textSize="12sp" />
+
 </LinearLayout>

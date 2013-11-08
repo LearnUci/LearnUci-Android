@@ -1,23 +1,31 @@
 package org.gbc.ucitour.tour;
 
 import org.gbc.ucitour.R;
+import org.gbc.ucitour.location.LocationProvider;
 import org.gbc.ucitour.model.LocationPoint;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -27,13 +35,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class TourMapFragment extends SupportMapFragment implements OnMarkerClickListener {
+public class TourMapFragment extends SupportMapFragment implements OnMarkerClickListener, OnInfoWindowClickListener {
 	private LatLng latlng;
 	private TourMapFragmentsActivity parent;
 	private boolean launched = false;
 	private GoogleMap map;
 	private SharedPreferences sharedPrefs;
-	private static final double ICON_MAX_WIDTH = 150;
+	private Marker currMarker = null;
+	private LocationProvider mlocProvider;
 
 	public TourMapFragment() {
 		super();
@@ -50,6 +59,10 @@ public class TourMapFragment extends SupportMapFragment implements OnMarkerClick
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		parent = (TourMapFragmentsActivity) activity;
+
+		
+		/* Use the LocationProvider class to obtain GPS locations */
+	    mlocProvider = LocationProvider.instance(parent, null);
 	}
 
 	@Override
@@ -81,16 +94,12 @@ public class TourMapFragment extends SupportMapFragment implements OnMarkerClick
 	            title.setText(lp.getName());
 	    		Bitmap original = BitmapFactory.decodeByteArray(lp.getImage(), 0, lp.getImage().length);
 	            image.setImageBitmap(original);
-	            
-//	    		double ratio = original.getWidth() / original.getHeight();
-//				BitmapDescriptor bm = null;
-//				if(original.getWidth() > ICON_MAX_WIDTH){
-//					int width = (int)ICON_MAX_WIDTH;
-//					int height = (int)(original.getHeight() * (ICON_MAX_WIDTH / original.getWidth()));
-//					bm = BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(original, width, height, false));
-//				}else
-//					bm = BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeByteArray(lp.getImage(), 0, lp.getImage().length));
-				// TODO Auto-generated method stub
+	            //if this is the last marker, make sure description says so
+	            if(parent.currentLocation == parent.getLps().size()){
+	            	TextView desc = (TextView) v.findViewById(R.id.window_text_moveon);
+	            	desc.setText("Last tour point, you're finished!");
+	            }
+
 				return v;
 			}
 		});
@@ -117,11 +126,9 @@ public class TourMapFragment extends SupportMapFragment implements OnMarkerClick
 					getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15.4f));
 			}
 
-			reDrawMap();
-
 			getMap().setOnMapClickListener(parent);
 			getMap().setOnMarkerClickListener(this);
-
+			getMap().setOnInfoWindowClickListener(this);
 			getMap().setMyLocationEnabled(true);
 		}
 	}
@@ -131,14 +138,19 @@ public class TourMapFragment extends SupportMapFragment implements OnMarkerClick
 			// end of tour -- we can do something later here.
 			return;
 		}
+		//remove previous point
+		if(currMarker != null){
+			currMarker.remove();
+		}
 		LocationPoint lp = parent.getLps().get(parent.currentLocation);
 		float lat = lp.getLatitude();
 		float lng = lp.getLongitude();
 		String locTitle = lp.getName();
-
+		
 		if(getMap() != null){
-			getMap().addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(locTitle));
+			currMarker = getMap().addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(locTitle));
 		}
+		mlocProvider.setNextLocation(currMarker);
 		parent.currentLocation++;
 	}
 
@@ -149,16 +161,13 @@ public class TourMapFragment extends SupportMapFragment implements OnMarkerClick
 		getMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom), 3000, null);
 	}
 
-	public void reDrawMap() {
-	}
-
-	public void addImage(LatLng point) {
-
-	}
-
 	@Override
 	public boolean onMarkerClick(final Marker marker) {
 		return false;
 	}
 
+	@Override
+	public void onInfoWindowClick(Marker arg0) {
+		processNextLocation();
+	}
 }
