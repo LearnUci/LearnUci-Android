@@ -3,6 +3,7 @@ package org.gbc.ucitour.search;
 import java.util.List;
 
 import org.gbc.ucitour.R;
+import org.gbc.ucitour.history.PersistentHistory;
 import org.gbc.ucitour.model.LocationPoint;
 import org.gbc.ucitour.net.Query;
 import org.gbc.ucitour.tour.TourMapFragmentsActivity;
@@ -23,7 +24,9 @@ import android.widget.LinearLayout;
 public class SearchableActivity extends Activity implements OnClickListener {
   protected LinearLayout contentContainer;
   protected LinearLayout resultContainer;
-  private BannerView banner;
+  protected LinearLayout nonScrollableContainer;
+  
+  protected BannerView banner;
   
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,9 @@ public class SearchableActivity extends Activity implements OnClickListener {
     
     // Result container contains the search results
     resultContainer = (LinearLayout) findViewById(R.id.search_results);
+    
+    // Content container that doesn't scroll (match parent height)
+    nonScrollableContainer = (LinearLayout) findViewById(R.id.nonscrollcontent);
     
     // Banner view
     banner = ((BannerView) findViewById(R.id.banner));
@@ -54,10 +60,14 @@ public class SearchableActivity extends Activity implements OnClickListener {
   public void setShowSearch(boolean show) {
     // Display only one container depending on the mode
     contentContainer.setVisibility(show ? LinearLayout.GONE : LinearLayout.VISIBLE);
+    nonScrollableContainer.setVisibility(show ? LinearLayout.GONE : LinearLayout.VISIBLE);
     resultContainer.setVisibility(show ? LinearLayout.VISIBLE : LinearLayout.GONE);
   }
   
   public void setQuery(String query) {
+    PersistentHistory.getInstance().addHistory(PersistentHistory.TYPE_SEARCH, query, "",
+        String.valueOf(System.currentTimeMillis()));
+    
     // Make a query based on the keywords
     List<LocationPoint> results = Query.query("SEARCH", "KEYWORD", query);
     clearQuery();

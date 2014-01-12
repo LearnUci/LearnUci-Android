@@ -45,6 +45,9 @@ class CameraPreview extends ViewGroup implements SurfaceHolder.Callback {
 
   public void setCamera(Camera camera) {
     mCamera = camera;
+    if (mCamera != null) {
+      mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+    }
     setCameraDisplayOrientation(CameraInfo.CAMERA_FACING_BACK, camera);
   }
 
@@ -77,6 +80,17 @@ class CameraPreview extends ViewGroup implements SurfaceHolder.Callback {
 
       int previewWidth = width;
       int previewHeight = height;
+      
+      float ratio = (float) width / height;
+      float minDiff = Float.MAX_VALUE;
+      for (Size size : mSupportedPreviewSizes) {
+        float sizeR = (float) size.width / size.height;
+        if (Math.abs(ratio - sizeR) > minDiff) {
+          minDiff = Math.abs(ratio - sizeR);
+          mPreviewSize = size;
+        }
+      }
+      
       if (mPreviewSize != null) {
         previewWidth = mPreviewSize.width;
         previewHeight = mPreviewSize.height;

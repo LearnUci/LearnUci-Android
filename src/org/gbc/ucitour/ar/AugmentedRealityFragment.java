@@ -1,5 +1,7 @@
 package org.gbc.ucitour.ar;
 
+import org.gbc.ucitour.model.LocationPoint;
+
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
@@ -16,15 +18,18 @@ public class AugmentedRealityFragment extends Fragment {
   private CameraPreview mPreview;
   private Camera mCamera;
   private FrameLayout fl;
+  private GlRenderer renderer;
   
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    
+    renderer = new GlRenderer(getActivity());
     mPreview = new CameraPreview(getActivity());
     glView = new GLSurfaceView(getActivity());
     glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
     glView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-    glView.setRenderer(new GlRenderer(getActivity()));
+    glView.setRenderer(renderer);
     glView.setZOrderOnTop(true);
     fl = new FrameLayout(getActivity());
     fl.addView(mPreview);
@@ -64,5 +69,9 @@ public class AugmentedRealityFragment extends Fragment {
     } else {
       glView.setVisibility(View.VISIBLE); 
     }
+  }
+  
+  public void setLocation(LocationPoint location) {
+    renderer.setLocation(location); 
   }
 }

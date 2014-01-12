@@ -1,6 +1,7 @@
 package org.gbc.ucitour;
 
 import org.gbc.ucitour.tour.TourActivity;
+import org.gbc.ucitour.history.HistoryActivity;
 import org.gbc.ucitour.search.SearchableActivity;
 import org.gbc.ucitour.view.ActionCard;
 
@@ -15,11 +16,11 @@ public class HomeActivity extends SearchableActivity {
 	  //Comment to test git
     super.onCreate(savedInstanceState);
     // Add action cards for various activities
-    contentContainer.addView(new ActionCard<TourActivity>(
-        this, TourActivity.class, "Take a Tour", R.drawable.takeatour));
-    /*contentContainer.addView(new ActionCard<AugmentedRealityFragment>(
-        this, AugmentedRealityFragment.class, "World View", R.drawable.graphic2));
-    contentContainer.addView(new ActionCard<AugmentedRealityFragment>(
-        this, AugmentedRealityFragment.class, "History"));*/
+    contentContainer.addView(new ActionCard<TourActivity>(this, TourActivity.class,
+        "Take a Tour", R.drawable.takeatour));
+    contentContainer.addView(new ActionCard<TourActivity>(this, TourActivity.class,
+        "What's near me", R.drawable.whatsnear)); 
+    contentContainer.addView(new ActionCard<HistoryActivity>(this, HistoryActivity.class,
+        "History", R.drawable.history)); 
   }
 }

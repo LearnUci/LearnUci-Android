@@ -68,6 +68,15 @@ public class BannerView extends RelativeLayout implements OnEditorActionListener
     container = (RelativeLayout) findViewById(R.id.banner_overlay);
     container.setFocusable(true);
     container.setFocusableInTouchMode(true);
+    
+    findViewById(R.id.btn).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+        activity.setQuery(input.getText().toString());
+      }
+    });
   }
   
   public boolean back() {
@@ -75,9 +84,19 @@ public class BannerView extends RelativeLayout implements OnEditorActionListener
       input.setText("");
       activity.clearQuery();
       container.requestFocus();
+      searching = false;
+      activity.setShowSearch(false);
       return false;
     }
     return true;
+  }
+  
+  public void setText(String text) {
+    input.setText(text); 
+  }
+  
+  public void setIsSearching(boolean searching) {
+    this.searching = searching;
   }
   
   public void setOnSearchListener(SearchableActivity activity) {

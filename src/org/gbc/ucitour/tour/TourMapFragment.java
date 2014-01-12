@@ -4,11 +4,9 @@ import org.gbc.ucitour.R;
 import org.gbc.ucitour.model.LocationPoint;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +19,6 @@ import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -32,8 +28,6 @@ public class TourMapFragment extends SupportMapFragment implements OnMarkerClick
 	private TourMapFragmentsActivity parent;
 	private boolean launched = false;
 	private GoogleMap map;
-	private SharedPreferences sharedPrefs;
-	private static final double ICON_MAX_WIDTH = 150;
 
 	public TourMapFragment() {
 		super();
@@ -110,7 +104,6 @@ public class TourMapFragment extends SupportMapFragment implements OnMarkerClick
 			settings.setCompassEnabled(true);
 			settings.setTiltGesturesEnabled(false);
 
-			sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 			if (!launched) {
 				launched = true;
 				if (latlng != null)

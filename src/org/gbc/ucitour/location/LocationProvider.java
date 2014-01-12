@@ -38,7 +38,6 @@ public class LocationProvider implements LocationListener {
   @Override
   public void onLocationChanged(Location location) {
     point = location;
-    System.out.println(location.getLatitude() + " " + location.getLongitude());
   }
 
   @Override

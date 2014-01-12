@@ -8,8 +8,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.Canvas;
 import android.opengl.GLUtils;
 
 class Square {
@@ -39,14 +37,7 @@ class Square {
     ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
     byteBuffer.order(ByteOrder.nativeOrder());
     
-    // allocates the memory from the byte buffer
-    vertexBuffer = byteBuffer.asFloatBuffer();
-    
-    // fill the vertexBuffer with the vertices
-    vertexBuffer.put(vertices);
-    
-    // set the cursor position to the beginning of the buffer
-    vertexBuffer.position(0);
+    setVertexBuffer(1, 1);
     
     byteBuffer = ByteBuffer.allocateDirect(texture.length * 4);
     byteBuffer.order(ByteOrder.nativeOrder());
@@ -54,18 +45,40 @@ class Square {
     textureBuffer.put(texture);
     textureBuffer.position(0);
   }
-
+  
+  public void setVertexBuffer(float width, float height) {
+    float ratio = height / width;
+    float[] vertexPoints = new float[] {
+        -2.0f, -2 * ratio, 0.0f,
+        -2.0f,  2 * ratio, 0.0f,
+         2.0f, -2 * ratio, 0.0f,
+         2.0f,  2 * ratio, 0.0f
+    };
+    
+    // a float has 4 bytes so we allocate for each coordinate 4 bytes
+    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertexPoints.length * 4);
+    byteBuffer.order(ByteOrder.nativeOrder());
+    
+    // allocates the memory from the byte buffer
+    vertexBuffer = byteBuffer.asFloatBuffer();
+    
+    // fill the vertexBuffer with the vertices
+    vertexBuffer.put(vertexPoints);
+    
+    // set the cursor position to the beginning of the buffer
+    vertexBuffer.position(0);
+  }
+  
+  public void updateBitmap(Bitmap bitmap) {
+    GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, 0, 0, bitmap); 
+  }
+  
   /**
    * Load the texture for the square
    * @param gl
    * @param context
    */
-  public void loadGLTexture(GL10 gl, Context context) {
-    // loading texture
-    Bitmap bitmap = Bitmap.createBitmap(100, 100, Config.ARGB_8888);
-    Canvas canvas = new Canvas(bitmap);
-    canvas.drawColor(0xFFFFFFFF);
-
+  public void loadGLTexture(GL10 gl, Bitmap bitmap, Context context) {
     // generate one texture pointer
     gl.glGenTextures(1, textures, 0);
     // ...and bind it to our array
@@ -81,9 +94,6 @@ class Square {
     
     // Use Android GLUtils to specify a two-dimensional texture image from our bitmap 
     GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-    
-    // Clean up
-    bitmap.recycle();
   }
 
   

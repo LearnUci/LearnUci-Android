@@ -50,6 +50,7 @@ public class TourMapFragmentsActivity extends FragmentActivity implements OnMapC
     
     mMapFragment = addFragment(MAP_FRAGMENT_TAG, TourMapFragment.class);
     arFragment = addFragment(AR_FRAGMENT_TAG, AugmentedRealityFragment.class);
+    
     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
     fragmentTransaction.hide(arFragment);
     fragmentTransaction.commit();
@@ -84,6 +85,7 @@ public class TourMapFragmentsActivity extends FragmentActivity implements OnMapC
     arModeButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
+        updateLocation();
         // make mapModeButton unselected
         mapModeButton.setBackgroundColor(Color.parseColor(COLOR_UNSELECTED));
         // make arModeButton selected
@@ -95,6 +97,10 @@ public class TourMapFragmentsActivity extends FragmentActivity implements OnMapC
     });
   }
 
+  public void updateLocation() {
+    arFragment.setLocation(lps.get(currentLocation - 1));
+  }
+  
   private <T extends Fragment> T addFragment(String tag, Class<T> clazz) {
     try {
       Fragment f = getSupportFragmentManager().findFragmentByTag(tag);

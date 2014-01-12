@@ -6,7 +6,6 @@ import org.gbc.ucitour.R;
 import org.gbc.ucitour.model.TourPointInfo;
 import org.gbc.ucitour.net.Query;
 import org.gbc.ucitour.search.SearchableActivity;
-import org.gbc.ucitour.view.ActionCard;
 import org.gbc.ucitour.view.TourActionCard;
 import org.gbc.ucitour.view.ViewHelper;
 
@@ -27,7 +26,7 @@ public class TourActivity extends SearchableActivity {
 		// long...
 		List<TourPointInfo> tours = Query.queryTours();
 
-		ScrollView svLeft = (ScrollView) ll.findViewById(R.id.tour_main_scroll_left);
+		//ScrollView svLeft = (ScrollView) ll.findViewById(R.id.tour_main_scroll_left);
 //		LinearLayout svLeftLL = new LinearLayout(this);
 //		svLeftLL.setLayoutParams(ViewHelper.linearLayout(ViewHelper.MATCH_PARENT, ViewHelper.WRAP_CONTENT));
 //		svLeftLL.setOrientation(LinearLayout.VERTICAL);
@@ -41,8 +40,8 @@ public class TourActivity extends SearchableActivity {
 		
 		// just use takeatour picture since we dont have an image yet ...
 		for (TourPointInfo e : tours) {
-			svRightLL.addView(new TourActionCard<TourMapFragmentsActivity>(this, TourMapFragmentsActivity.class, e.getTpName(),
-					R.drawable.takeatour, e.getTourId()));
+			svRightLL.addView(new TourActionCard(this, e.getTpName(), R.drawable.takeatour,
+			    e.getTourId()));
 		}
 		svRight.addView(svRightLL);
 
