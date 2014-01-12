@@ -13,7 +13,6 @@ import android.os.Bundle;
 public class HomeActivity extends SearchableActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
-	  //Comment to test git
     super.onCreate(savedInstanceState);
     // Add action cards for various activities
     contentContainer.addView(new ActionCard<TourActivity>(this, TourActivity.class,

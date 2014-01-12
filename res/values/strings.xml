@@ -10,5 +10,6 @@
     <string name="tour_academic">Academic</string>
     <string name="tour_fragment_maps">Map Mode</string>
     <string name="tour_fragment_ar">AR Mode</string>
+    <string name="tour_window_moveon">Click to move on!</string>
     
 </resources>
