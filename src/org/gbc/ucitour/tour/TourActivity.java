@@ -12,38 +12,60 @@ import org.gbc.ucitour.view.ViewHelper;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 public class TourActivity extends SearchableActivity {
+  private ProgressBar progressBar;
+  
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		LayoutInflater li = LayoutInflater.from(this);
-		LinearLayout ll = (LinearLayout) li.inflate(R.layout.tour_view_select, contentContainer);
-
-		// we should probably throw this query into a thread if it takes too
-		// long...
-		List<TourPointInfo> tours = Query.queryTours();
-
-		//ScrollView svLeft = (ScrollView) ll.findViewById(R.id.tour_main_scroll_left);
-//		LinearLayout svLeftLL = new LinearLayout(this);
-//		svLeftLL.setLayoutParams(ViewHelper.linearLayout(ViewHelper.MATCH_PARENT, ViewHelper.WRAP_CONTENT));
-//		svLeftLL.setOrientation(LinearLayout.VERTICAL);
-//		svLeftLL.addView(new ActionCard<TourMapFragmentsActivity>(this, TourMapFragmentsActivity.class, "Take a Tour", R.drawable.takeatour));
-//		svLeft.addView(svLeftLL);
-
-		ScrollView svRight = (ScrollView) ll.findViewById(R.id.tour_main_scroll_right);
-		LinearLayout svRightLL = new LinearLayout(this);
-		svRightLL.setLayoutParams(ViewHelper.linearLayout(ViewHelper.MATCH_PARENT, ViewHelper.WRAP_CONTENT));
-		svRightLL.setOrientation(LinearLayout.VERTICAL);
+		progressBar = new ProgressBar(this);
+		RelativeLayout.LayoutParams params = ViewHelper.layout(ViewHelper.WRAP_CONTENT, ViewHelper.WRAP_CONTENT);
+		params.addRule(RelativeLayout.CENTER_IN_PARENT);
+		progressBar.setLayoutParams(params);
 		
-		// just use takeatour picture since we dont have an image yet ...
-		for (TourPointInfo e : tours) {
-			svRightLL.addView(new TourActionCard(this, e.getTpName(), R.drawable.takeatour,
-			    e.getTourId()));
+		if (!isLoading()) {
+		  homeContainer.addView(progressBar);
 		}
-		svRight.addView(svRightLL);
+    setContentLoading(true);
+		
+		new Thread(new Runnable() {
+		  @Override
+		  public void run() {
+		    final List<TourPointInfo> tours = Query.queryTours();
+		    TourActivity.this.runOnUiThread(new Runnable() {
+		      @Override
+		      public void run() {
+		        setContentLoading(false);
+		        if (!isLoading()) {
+		          homeContainer.removeView(progressBar);
+		        }
+		        LayoutInflater li = LayoutInflater.from(TourActivity.this);
+		        LinearLayout ll = (LinearLayout) li.inflate(R.layout.tour_view_select, contentContainer);
+//          ScrollView svLeft = (ScrollView) ll.findViewById(R.id.tour_main_scroll_left);
+//		      LinearLayout svLeftLL = new LinearLayout(this);
+//		      svLeftLL.setLayoutParams(ViewHelper.linearLayout(ViewHelper.MATCH_PARENT, ViewHelper.WRAP_CONTENT));
+//		      svLeftLL.setOrientation(LinearLayout.VERTICAL);
+//		      svLeftLL.addView(new ActionCard<TourMapFragmentsActivity>(this, TourMapFragmentsActivity.class, "Take a Tour", R.drawable.takeatour));
+//		      svLeft.addView(svLeftLL);
 
+		        ScrollView svRight = (ScrollView) ll.findViewById(R.id.tour_main_scroll_right);
+		        LinearLayout svRightLL = new LinearLayout(TourActivity.this);
+		        svRightLL.setLayoutParams(ViewHelper.linearLayout(ViewHelper.MATCH_PARENT, ViewHelper.WRAP_CONTENT));
+		        svRightLL.setOrientation(LinearLayout.VERTICAL);
+		        
+		        // just use takeatour picture since we dont have an image yet ...
+		        for (TourPointInfo e : tours) {
+		          svRightLL.addView(new TourActionCard(TourActivity.this, e.getTpName(), R.drawable.takeatour,
+		              e.getTourId()));
+		        }
+		        svRight.addView(svRightLL);
+		      }
+		    });
+		  }}).start();
 	}
 }

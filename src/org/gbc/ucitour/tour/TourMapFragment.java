@@ -79,10 +79,12 @@ public class TourMapFragment extends SupportMapFragment implements OnMarkerClick
 	            View v = getLayoutInflater(null).inflate(R.layout.window_layout, null);
 	            LocationPoint lp = parent.getLps().get(parent.currentLocation - 1);
 	            TextView title = (TextView) v.findViewById(R.id.window_text);
-	            ImageView image = (ImageView) v.findViewById(R.id.window_image);
 	            title.setText(lp.getName());
-	    		Bitmap original = BitmapFactory.decodeByteArray(lp.getImage(), 0, lp.getImage().length);
-	            image.setImageBitmap(original);
+	            if (lp.hasImage()) {
+	              ImageView image = (ImageView) v.findViewById(R.id.window_image);
+	              Bitmap original = BitmapFactory.decodeByteArray(lp.getImage(), 0, lp.getImage().length);
+	              image.setImageBitmap(original);
+	            }
 	            //if this is the last marker, make sure description says so
 	            if(parent.currentLocation == parent.getLps().size()){
 	            	TextView desc = (TextView) v.findViewById(R.id.window_text_moveon);
