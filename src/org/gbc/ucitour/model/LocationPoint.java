@@ -13,6 +13,7 @@ public class LocationPoint {
   private String name;
   private String abbr;
   private String type;
+  private String desc = null;
   private byte[] img;
   private long id;
   
@@ -27,6 +28,9 @@ public class LocationPoint {
     type = obj.get("type").getAsString();
     if (obj.has("img")) {
       img = Base64.decode(obj.get("img").getAsString(), Base64.DEFAULT);
+    }
+    if (obj.has("desc")) {
+      desc = obj.get("desc").getAsString();
     }
     float newLat = (0.120246f * lat) + (-0.0460953f * lng) + 24.1819f;
     float newLng = (0.0693213f * lat) + (0.118713f * lng) - 106.18865f;
@@ -61,6 +65,14 @@ public class LocationPoint {
   
   public byte[] getImage() {
     return img;
+  }
+  
+  public boolean hasDescription() {
+    return desc != null;
+  }
+  
+  public String getDescription() {
+    return desc;
   }
   
   public long getId() {

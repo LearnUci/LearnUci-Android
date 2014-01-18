@@ -2,9 +2,12 @@ package org.gbc.ucitour.view;
 
 import org.gbc.ucitour.history.PersistentHistory;
 import org.gbc.ucitour.tour.TourMapFragmentsActivity;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -14,8 +17,13 @@ public class TourActionCard extends ActionCard<TourMapFragmentsActivity> impleme
 	private Activity parent;
 	private String tourName;
 	
-	public TourActionCard(Activity context, String text, Integer resId, long tourId) {
-		super(context, TourMapFragmentsActivity.class, text, resId);
+	// Targeting older devices, so I'm preferring to use deprecated rather than only support api >= 16
+	@SuppressWarnings("deprecation")
+  public TourActionCard(Activity context, String text, Bitmap bmp, long tourId) {
+		super(context, TourMapFragmentsActivity.class, text);
+		if (bmp != null) {
+		  setBackgroundDrawable(new BitmapDrawable(getResources(), bmp));
+		}
 		this.tourId = tourId;
 		this.parent = context;
 		this.tourName = text;

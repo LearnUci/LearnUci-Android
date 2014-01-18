@@ -39,16 +39,19 @@ public class ActionCard<T extends Activity> extends Card implements OnClickListe
 
 		RelativeLayout pictureWithLabel = new RelativeLayout(context);
 		pictureWithLabel.setLayoutParams(ViewHelper.linearLayout(ViewHelper.MATCH_PARENT, ViewHelper.WRAP_CONTENT));
+    RelativeLayout.LayoutParams ivParams = new RelativeLayout.LayoutParams(ViewHelper.MATCH_PARENT, ViewHelper.WRAP_CONTENT);
+    ImageView iv = new ImageView(context);
+    iv.setAdjustViewBounds(true);
+    iv.setLayoutParams(ivParams);
 		if (resId != null) {
-			RelativeLayout.LayoutParams ivParams = new RelativeLayout.LayoutParams(ViewHelper.MATCH_PARENT, ViewHelper.WRAP_CONTENT);
-			ImageView iv = new ImageView(context);
 			iv.setImageResource(resId);
-			iv.setLayoutParams(ivParams);
-			iv.setAdjustViewBounds(true);
 			iv.setBackgroundColor(0xFFFFFFFF);
-			pictureWithLabel.addView(iv);
+		} else {
+      iv.setBackgroundColor(0xFF555555);
+      iv.setLayoutParams(ivParams);
+      iv.setMinimumHeight(ViewHelper.dpInt(100, context));
 		}
-		
+    pictureWithLabel.addView(iv);
 		TextView tv = ViewHelper.text(context, text, 16);
 		tv.setGravity(Gravity.CENTER_HORIZONTAL);
 

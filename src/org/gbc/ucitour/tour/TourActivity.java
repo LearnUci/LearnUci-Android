@@ -9,6 +9,8 @@ import org.gbc.ucitour.search.SearchableActivity;
 import org.gbc.ucitour.view.TourActionCard;
 import org.gbc.ucitour.view.ViewHelper;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -60,7 +62,12 @@ public class TourActivity extends SearchableActivity {
 		        
 		        // just use takeatour picture since we dont have an image yet ...
 		        for (TourPointInfo e : tours) {
-		          svRightLL.addView(new TourActionCard(TourActivity.this, e.getTpName(), R.drawable.takeatour,
+		          byte[] data = e.getTpImg();
+		          Bitmap img = null;
+		          if (data != null) {
+		            img = BitmapFactory.decodeByteArray(data, 0, data.length);
+		          }
+		          svRightLL.addView(new TourActionCard(TourActivity.this, e.getTpName(), img,
 		              e.getTourId()));
 		        }
 		        svRight.addView(svRightLL);
