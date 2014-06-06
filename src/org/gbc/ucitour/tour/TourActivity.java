@@ -48,12 +48,6 @@ public class TourActivity extends SearchableActivity {
 		        }
 		        LayoutInflater li = LayoutInflater.from(TourActivity.this);
 		        LinearLayout ll = (LinearLayout) li.inflate(R.layout.tour_view_select, contentContainer);
-//          ScrollView svLeft = (ScrollView) ll.findViewById(R.id.tour_main_scroll_left);
-//		      LinearLayout svLeftLL = new LinearLayout(this);
-//		      svLeftLL.setLayoutParams(ViewHelper.linearLayout(ViewHelper.MATCH_PARENT, ViewHelper.WRAP_CONTENT));
-//		      svLeftLL.setOrientation(LinearLayout.VERTICAL);
-//		      svLeftLL.addView(new ActionCard<TourMapFragmentsActivity>(this, TourMapFragmentsActivity.class, "Take a Tour", R.drawable.takeatour));
-//		      svLeft.addView(svLeftLL);
 
 		        ScrollView svRight = (ScrollView) ll.findViewById(R.id.tour_main_scroll_right);
 		        LinearLayout svRightLL = new LinearLayout(TourActivity.this);

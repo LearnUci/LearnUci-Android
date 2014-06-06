@@ -46,8 +46,8 @@ public class TourMapFragmentsActivity extends FragmentActivity implements OnMapC
     } else {
       lps = new ArrayList<LocationPoint>();
       lps.add(Query.single("id", getIntent().getLongExtra("locationId", 0) + ""));
-    }
-    
+    }  
+
     mMapFragment = addFragment(MAP_FRAGMENT_TAG, TourMapFragment.class);
     arFragment = addFragment(AR_FRAGMENT_TAG, AugmentedRealityFragment.class);
     
