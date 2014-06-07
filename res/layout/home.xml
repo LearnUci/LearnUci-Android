@@ -5,7 +5,7 @@
   android:orientation="vertical"
   android:id="@+id/home_container"
   android:background="#F0F0F0">
-  <org.gbc.ucitour.view.BannerView
+  <org.learnuci.view.BannerView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/banner"/>
