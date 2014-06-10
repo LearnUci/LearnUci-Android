@@ -64,7 +64,6 @@ class GlRenderer implements Renderer {
   public void setLocation(LocationPoint point) {
     synchronized (bmpLock) {
       this.location = point;
-      
       float height = sp(12) + sp(8) + 25;
       float width = Math.max(this.titlePaint.measureText(this.location.getName()),
           this.distPaint.measureText("99.99 kilometers")) + 30;
@@ -132,7 +131,7 @@ class GlRenderer implements Renderer {
           canvas.drawText(name, xTitle, sp(12) + 5, titlePaint);
           canvas.drawText(dist, xDist, sp(8) + sp(12) + 10, distPaint);
         }
-        square.updateBitmap(bitmap);
+        square.loadGLTexture(gl, bitmap, this.context);
         changed = false;
       }
       prevDist = dist;

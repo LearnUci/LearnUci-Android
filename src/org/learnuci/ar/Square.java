@@ -70,7 +70,11 @@ class Square {
   }
   
   public void updateBitmap(Bitmap bitmap) {
-    GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, 0, 0, bitmap); 
+    /*
+    System.out.println(bitmap);
+    System.out.println(bitmap.getWidth());
+    System.out.println(bitmap.getHeight());
+    GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, 0, 0, bitmap); */
   }
   
   /**
